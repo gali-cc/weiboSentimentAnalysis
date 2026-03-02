@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% block title %}微博IP分析{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">微博IP分析</h4>
+                        </div>
+                        <div class="header-action">
+                            <i data-toggle="collapse" data-target="#datatable-1" aria-expanded="false">
+                                <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                </svg>
+                            </i>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="articleIPMap" data-articleip='{{ articleIPData|default([])|tojson|safe }}'
+                        data-maxvalue="{{ articleMaxValue }}" style="width:100%;height:750px;text-align:center">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div id="commentIPMap" data-commentip='{{ commentIPData|default([])|tojson|safe }}'
+                        data-maxvalue="{{ commentMaxValue }}" style="width:100%;height:750px;text-align:center">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block echarts %}
+    <script>
+        function renderIpMap(containerId, dataKey, maxKey, title) {
+            var dom = document.getElementById(containerId);
+            if (!dom) {
+                return;
+            }
+            var chart = echarts.init(dom);
+            
+            // 1. 这种通过 dataset 传值的方式非常标准
+            var mapData = JSON.parse(dom.dataset[dataKey] || '[]');
+            var maxValue = parseInt(dom.dataset[maxKey] || '0');
+            
+            var option = {
+
+                title: { text: title, left: 'center' },
+                tooltip: {
+                    trigger: 'item',
+                    formatter: '{b}<br/>发布量：{c}'
+                },
+                toolbox: {
+                    show: true,
+                    orient: 'vertical',
+                    left: 'right',
+                    top: 'center',
+                    feature: {
+                        dataView: { readOnly: false },
+                        restore: {},
+                        saveAsImage: {}
+                    }
+                },
+                visualMap: {
+                    min: 0,
+                    max: maxValue,
+                    text: ['高', '低'],
+                    realtime: false,
+                    calculable: true,
+                    inRange: {
+                        color: ['lightskyblue', 'yellow', 'orangered']
+                    }
+                },
+                series: [
+                    {
+                        name: title,
+                        type: 'map',
+                        // 与 base.html 里引入的 china.js 注册名称一致
+                        map: 'china',
+                        label: { show: true, fontSize: 8 },
+                        data: mapData
+                    }
+                ]
+            };
+
+            chart.setOption(option);
+            return chart;
+        }
+
+        // 2. 分别渲染两张地图
+        var articleChart = renderIpMap('articleIPMap', 'articleip', 'maxvalue', '微博IP分析-基于用户发布微博');
+        var commentChart = renderIpMap('commentIPMap', 'commentip', 'maxvalue', '微博IP分析-基于用户评论微博');
+
+        // 3. 自适应窗口大小
+        window.addEventListener('resize', function () {
+            if (articleChart) {
+                articleChart.resize();
+            }
+            if (commentChart) {
+                commentChart.resize();
+            }
+        });
+    </script>
+{% endblock %}

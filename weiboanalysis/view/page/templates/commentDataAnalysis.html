@@ -1,0 +1,215 @@
+{% extends 'base.html' %}
+{% block title %}微博评论分析{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mb-4 mt-1">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <h4 class="font-weight-bold">微博评论分析</h4>
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">评论点赞次数区间图</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="dzMain" data-xdz='{{ xDzData | tojson }}' data-ydz='{{ yDzData | tojson }}'
+                         style="width:100%;height:450px">
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">评论用户性别占比</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="xbMain"  data-gender='{{ genderData | tojson }}' style="width:100%;height:450px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">用户评论词云图</h4>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div id="commentCloudMain" style="width:100%;height:450px;text-align:center">
+                            <img style="width:72%" src="/static/comment_cloud.jpg" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+{% endblock %}
+{% block echarts %}
+    <script>
+        var chartDom = document.getElementById('dzMain');
+        var myChart = echarts.init(chartDom);
+        // 获取数据
+        var xDzData = JSON.parse(chartDom.dataset.xdz);
+        var yDzData = JSON.parse(chartDom.dataset.ydz);
+        var option = {
+            title: {
+                text: '评论点赞量区间折线图',
+                left: '1%'
+            },
+            legend: {},
+            tooltip: {
+                trigger: 'axis'
+            },
+            grid: {
+                left: '5%',
+                right: '15%',
+                bottom: '10%'
+            },
+            xAxis: {
+                data: xDzData
+            },
+            yAxis: {},
+            toolbox: {
+                right: 10,
+                feature: {
+                    dataZoom: {
+                        yAxisIndex: 'none'
+                    },
+                    restore: {},
+                    saveAsImage: {}
+                }
+            },
+            dataZoom: [
+                {
+                    show: true,
+                    start: 10,
+                    end: 60
+                },
+            ],
+            visualMap: {
+                top: 50,
+                right: 10,
+                pieces: [
+                    {
+                        gt: 0,
+                        lte: 20,
+                        color: '#93CE07'
+                    },
+                    {
+                        gt: 20,
+                        lte: 40,
+                        color: '#FBDB0F'
+                    },
+                    {
+                        gt: 40,
+                        lte: 60,
+                        color: '#FC7D02'
+                    },
+                    {
+                        gt: 60,
+                        lte: 80,
+                        color: '#FD0100'
+                    },
+                    {
+                        gt: 80,
+                        lte: 100,
+                        color: '#AA069F'
+                    },
+                    {
+                        gt: 100,
+                        color: '#AC3B2A'
+                    }
+                ],
+                outOfRange: {
+                    color: '#999'
+                }
+            },
+            series: {
+                name: '点赞区间个数',
+                type: 'line',
+                data: yDzData,
+                markLine: {
+                    silent: true,
+                    lineStyle: {
+                        color: '#333'
+                    },
+                    data: [
+                        {
+                            yAxis: 50
+                        },
+                        {
+                            yAxis: 100
+                        },
+                        {
+                            yAxis: 150
+                        },
+                        {
+                            yAxis: 200
+                        },
+                        {
+                            yAxis: 300
+                        }
+                    ]
+                }
+            }
+        }
+        option && myChart.setOption(option);
+    </script>
+
+    <script>
+        var chartDom = document.getElementById('xbMain');
+        var myChart = echarts.init(chartDom);
+        // 获取数据
+        var genderData = JSON.parse(chartDom.dataset.gender);
+        var option;
+
+        option = {
+            title: {
+                text: '评论性别占比饼图',
+                left: 'center'
+            },
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                orient: 'vertical',
+                left: 'left'
+            },
+            series: [
+                {
+                    name: '性别个数',
+                    type: 'pie',
+                    radius: '50%',
+                    data: genderData,
+                    emphasis: {
+                        itemStyle: {
+                            shadowBlur: 10,
+                            shadowOffsetX: 0,
+                            shadowColor: 'rgba(0, 0, 0, 0.5)'
+                        }
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+{% endblock %}

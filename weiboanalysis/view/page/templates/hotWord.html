@@ -1,0 +1,356 @@
+{% extends 'base.html' %}
+{% block title %}微博热词分析{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mb-4 mt-1">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <h4 class="font-weight-bold">微博热词分析</h4>
+
+                </div>
+            </div>
+            <div class="col-lg-12 col-md-12">
+                <div class="card card-block card-stretch card-height">
+                    <div class="card-body p-10">
+                        <div>
+                            <label>热词选择：</label>
+                            <select onchange="changeHotWord(event)">
+                                {% for hotword in hotwordList %}
+                                    <option {{ 'selected' if defaultHotWord==hotword else '' }}
+                                            value="{{ hotword }}">{{ hotword }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div style="padding-top: 10px">
+                            出现次数：{{ hotWordNum }}次&nbsp;&nbsp;&nbsp;热词情感：{{ sentiments }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="card card-block card-stretch card-height">
+                    <div class="card-body p-10">
+                        <div id="hotWordMain" data-x='{{ xAxisCommentData|tojson|safe }}' data-y='{{ yAxisCommentData|tojson|safe }}'
+                         style="width:100%;height:350px">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="card">
+                    <div class="card-header d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">评论热词查询</h4>
+                        </div>
+                        <div class="header-action">
+                            <i data-toggle="collapse" data-target="#datatable-1" aria-expanded="false">
+                                <svg width="20" xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path>
+                                </svg>
+                            </i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="collapse" id="datatable-1">
+                            <div class="card"><kbd class="bg-dark"><pre id="bootstrap-datatables"
+                                                                        class="text-white"><code>
+&#x3C;table id=&#x22;datatable&#x22; class=&#x22;table data-table table-striped table-bordered&#x22; &#x3E;
+   &#x3C;thead&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;th&#x3E;Name&#x3C;/th&#x3E;
+         &#x3C;th&#x3E;Position&#x3C;/th&#x3E;
+         &#x3C;th&#x3E;Office&#x3C;/th&#x3E;
+         &#x3C;th&#x3E;Age&#x3C;/th&#x3E;
+         &#x3C;th&#x3E;Start date&#x3C;/th&#x3E;
+         &#x3C;th&#x3E;Salary&#x3C;/th&#x3E;
+      &#x3C;/tr&#x3E;
+   &#x3C;/thead&#x3E;
+   &#x3C;tbody&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Tiger Nixon&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;System Architect&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Edinburgh&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;61&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2011/04/25&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$320,800&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Garrett Winters&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Accountant&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Tokyo&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;63&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2011/07/25&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$170,750&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Ashton Cox&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Junior Technical Author&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;San Francisco&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;66&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2009/01/12&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$86,000&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Cedric Kelly&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Senior Javascript Developer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Edinburgh&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;22&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/03/29&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$433,060&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Airi Satou&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Accountant&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Tokyo&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;33&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2008/11/28&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$162,700&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Brielle Williamson&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Integration Specialist&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;New York&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;61&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/12/02&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$372,000&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Herrod Chandler&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Sales Assistant&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;San Francisco&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;59&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/08/06&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$137,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Rhona Davidson&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Integration Specialist&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Tokyo&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;55&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2010/10/14&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$327,900&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Colleen Hurst&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Javascript Developer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;San Francisco&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;39&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2009/09/15&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$205,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Sonya Frost&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Software Engineer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Edinburgh&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;23&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2008/12/13&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$103,600&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Jena Gaines&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Office Manager&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;London&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;30&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2008/12/19&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$90,560&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Quinn Flynn&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Support Lead&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Edinburgh&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;22&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2013/03/03&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$342,000&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Charde Marshall&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Regional Director&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;San Francisco&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;36&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2008/10/16&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$470,600&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Haley Kennedy&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Senior Marketing Designer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;London&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;43&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/12/18&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$313,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Tatyana Fitzpatrick&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Regional Director&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;London&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;19&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2010/03/17&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$385,750&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Michael Silva&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Marketing Designer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;London&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;66&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/11/27&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$198,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Paul Byrd&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Chief Financial Officer (CFO)&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;New York&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;64&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2010/06/09&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$725,000&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Gloria Little&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Systems Administrator&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;New York&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;59&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2009/04/10&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$237,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Bradley Greer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Software Engineer&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;London&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;41&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/10/13&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$132,000&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+      &#x3C;tr&#x3E;
+         &#x3C;td&#x3E;Dai Rios&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Personnel Lead&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;Edinburgh&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;35&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;2012/09/26&#x3C;/td&#x3E;
+         &#x3C;td&#x3E;$217,500&#x3C;/td&#x3E;
+      &#x3C;/tr&#x3E;
+&#x3C;/table&#x3E;
+</code></pre>
+                            </kbd></div>
+                        </div>
+                        <div class="table-responsive">
+                            <table id="datatable-1" class="table data-table table-striped table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>评论ID</th>
+                                    <th>评论用户</th>
+                                    <th>用户IP</th>
+                                    <th>评论内容</th>
+                                    <th>评论时间</th>
+                                    <th class="text-right">
+                                        点赞个数
+                                    </th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% for comment in commentList %}
+                                    <tr>
+                                        <td>{{ comment[0] }}</td>
+                                        <td>{{ comment[7] }}</td>
+                                        <td style="width:100px">{{ comment[3] }}</td>
+                                        <td>{{ comment[1] }}</td>
+                                        <td style="width:200px">{{ comment[2] }}</td>
+                                        <td class="text-center" style="width:100px" data-order="{{ comment[4] }}">👍{{ comment[4] }}</td>
+                                    </tr>
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script>
+        function changeHotWord(e) {
+            const word = e.target.value;
+            const url = `/page/hotWord?word=${encodeURIComponent(word)}`;
+            window.location.href = url;
+        }
+    </script>
+{% endblock %}
+{% block echarts %}
+    <script>
+        var chartDom = document.getElementById('hotWordMain');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        const xAxisCommentData = JSON.parse(chartDom.dataset.x);
+        const yAxisCommentData = JSON.parse(chartDom.dataset.y);
+
+        option = {
+            title: {
+                text: '热词数量分布日期统计',
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data: ['分布个数']
+            },
+            toolbox: {
+                show: true,
+                feature: {
+                    dataView: {show: true, readOnly: false},
+                    magicType: {show: true, type: ['line', 'bar']},
+                    restore: {show: true},
+                    saveAsImage: {show: true}
+                }
+            },
+            calculable: true,
+            xAxis: [
+                {
+                    type: 'category',
+                    // prettier-ignore
+                    data: xAxisCommentData
+                }
+            ],
+            yAxis: [
+                {
+                    type: 'value'
+                }
+            ],
+            dataZoom: [
+                {
+                    show: true,
+                    start: 0,
+                    end: 40
+                },
+                {
+                    type: 'inside',
+                    start: 0,
+                    end: 40
+                }
+            ],
+            series: [
+                {
+                    name: '分布个数',
+                    type: 'bar',
+                    data: yAxisCommentData,
+                    markPoint: {
+                        data: [
+                            {type: 'max', name: 'Max'},
+                            {type: 'min', name: 'Min'}
+                        ]
+                    },
+                    markLine: {
+                        data: [{type: 'average', name: 'Avg'}]
+                    }
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+    </script>
+{% endblock %}

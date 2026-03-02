@@ -1,0 +1,298 @@
+{% extends 'base.html' %}
+{% block title %}首页{% endblock %}
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12 mb-4 mt-1">
+                <div class="d-flex flex-wrap justify-content-between align-items-center">
+                    <h4 class="font-weight-bold">首页</h4>
+
+                </div>
+            </div>
+            <div class="col-lg-8 col-md-12">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="">
+                                        <p class="mb-2 text-secondary">微博文章总量</p>
+                                        <div class="d-flex flex-wrap justify-content-start align-items-center">
+                                            <h5 class="mb-0 font-weight-bold" id="totalArticle">无数据</h5>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="">
+                                        <p class="mb-2 text-secondary">最高点赞微博-作者</p>
+                                        <div class="d-flex flex-wrap justify-content-start align-items-center">
+                                            <h5 class="mb-0 font-weight-bold" id="topAuthor">无数据</h5>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex align-items-center">
+                                    <div class="">
+                                        <p class="mb-2 text-secondary">微博点赞最多-城市</p>
+                                        <div class="d-flex flex-wrap justify-content-start align-items-center">
+                                            <h5 class="mb-0 font-weight-bold" id="topRegion">无数据</h5>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center flex-wrap">
+                                    <h4 class="font-weight-bold">最近七天微博发布量</h4>
+
+                                </div>
+                                <div id="article7fbl" data-x='{{ xAxis7ArticleData|default([])|tojson|safe }}' data-y='{{ yAxis7ArticleData|default([])|tojson|safe }}'
+                                 style="width: 100%;height: 300px" class="custom-chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-8">
+                <div class="card card-block card-stretch card-height">
+                    <div class="card-header card-header-border d-flex justify-content-between">
+                        <div class="header-title">
+                            <h4 class="card-title">微博点赞量Top6</h4>
+                        </div>
+                    </div>
+                    <div class="card-body-list">
+                        <ul class="list-style-3 mb-0" id="topArticle">
+
+                        </ul>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="font-weight-bold mb-3">微博类型占比饼状图</h4>
+                        <div id="articleTypeRatio" data-arctype='{{ arcTypeData|default([])|tojson|safe }}' style="width:100%;height:450px"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="font-weight-bold mb-3">评论用户名词云图</h4>
+                        <img style="width:100%;height:500px;object-fit:contain" src="/static/comment_user_cloud.jpg" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4 col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="font-weight-bold mb-3">评论用户时间占比环形饼状图</h4>
+                        <div id="commentUserRatio" data-comment='{{ commentData|default([])|tojson|safe }}' style="width:100%;height:450px"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Page end  -->
+    </div>
+{% endblock %}
+{% block echarts %}
+    <script>
+        // ready 等整个 HTML 页面加载完了再执行里面的 JS，防止找不到对应的 ID 标签。
+        $(document).ready(function () {
+             // 首页数据ajax异步交互 前端每隔5分钟请求一次 实时数据
+            function loadHomePageData() {
+                $.ajax({
+                    url: '/page/homePageData',
+                    type: 'GET',
+                    success: function (data) {
+                        // 成功回调函数
+                        // 更新首页数据
+                        $('#totalArticle').text(data.totalArticle);
+                        $('#topAuthor').text(data.topAuthor);
+                        $('#topRegion').text(data.topRegion);
+                        // 更新点赞最高的6条帖子
+                        function truncateText(text, maxLength) {
+                            if (!text) {
+                                return '';
+                            }
+                            return text.length > maxLength ? text.slice(0, maxLength) + '...' : text;
+                        }
+
+                        let topArticles = data.topArticles || [];
+                        let topArticleHtml = '';
+                        for (let i = 0; i < topArticles.length; i++) {
+                            const fullTitle = topArticles[i][0] || '';
+                            const title = truncateText(fullTitle, 20);
+                            const count = topArticles[i][1];
+                            const rank = i + 1;
+                            topArticleHtml += `
+                                <li class="p-3 list-item d-flex justify-content-start align-items-center">
+                                    <span class="badge badge-danger mr-2">${rank}</span>
+                                    <div class="list-style-detail ml-3 mr-2">
+                                        <span class="text-truncate" title="${fullTitle}">${title}</span>
+                                    </div>
+                                    <div class="list-style-action d-flex justify-content-end ml-auto">
+                                        <h6 class="font-weight-bold">${count}👍</h6>
+                                    </div>
+                                </li>
+                            `;
+                        }
+                        $('#topArticle').html(topArticleHtml);
+                    },
+                    error: function (xhr, status, error) {
+                        // 失败回调函数
+                        console.error('请求失败:', error);
+                    }
+                });
+            }
+
+            loadHomePageData();
+            setInterval(loadHomePageData, 300000); // 5分钟间隔
+        });
+    </script>
+
+    <script>
+        // 首页 7天内文章数量折线图
+        var chartDom = document.getElementById('article7fbl');
+        var myChart = echarts.init(chartDom);
+        var option;
+
+        // 从 HTML 元素的 dataset 中读取数据
+        var xData = JSON.parse(chartDom.dataset.x);
+        var yData = JSON.parse(chartDom.dataset.y);
+        
+        option = {
+            xAxis: {
+                name: '微博发布日期',
+                type: 'category',
+                boundaryGap: false,
+                data: xData
+            },
+            yAxis: {
+                name: '微博发布量',
+                type: 'value'
+            },
+            series: [
+                {
+                    data: yData,
+                    type: 'line',
+                    areaStyle: {}
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+    <script>
+        // 首页 文章类型占比饼图
+        var chartDom = document.getElementById('articleTypeRatio');
+        var myChart = echarts.init(chartDom);
+        var option;
+        // 从 HTML 元素的 dataset 中读取数据
+        var arcTypeData = JSON.parse(chartDom.dataset.arctype);
+
+        option = {
+        title: {
+            text: '微博类型占比',
+            // subtext: 'Fake Data',
+            left: 'center'
+        },
+        tooltip: {
+            trigger: 'item'
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            type: 'scroll'
+        },
+        series: [
+            {
+                name: '微博类型占比',
+                type: 'pie',
+                radius: '50%',
+                data: arcTypeData,
+                emphasis: {
+                    itemStyle: {
+                    shadowBlur: 10,
+                    shadowOffsetX: 0,
+                    shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+
+    <script>
+        // 首页 7天评论数量饼状图
+        var chartDom = document.getElementById('commentUserRatio');
+        var myChart = echarts.init(chartDom);
+        var option;
+        // 从 HTML 元素的 dataset 中读取数据
+        var commentData = JSON.parse(chartDom.dataset.comment);
+
+        option = {
+            tooltip: {
+                trigger: 'item'
+            },
+            legend: {
+                top: '5%',
+                left: 'center'
+            },
+            series: [
+                {
+                name: '7天评论用户时间占比',
+                type: 'pie',
+                radius: ['40%', '70%'],
+                avoidLabelOverlap: false,
+                itemStyle: {
+                    borderRadius: 10,
+                    borderColor: '#fff',
+                    borderWidth: 2
+                },
+                label: {
+                    show: false,
+                    position: 'center'
+                },
+                emphasis: {
+                    label: {
+                    show: true,
+                    fontSize: 40,
+                    fontWeight: 'bold'
+                    }
+                },
+                labelLine: {
+                    show: false
+                },
+                data: commentData
+                }
+            ]
+        };
+
+        option && myChart.setOption(option);
+
+    </script>
+    
+{% endblock %}

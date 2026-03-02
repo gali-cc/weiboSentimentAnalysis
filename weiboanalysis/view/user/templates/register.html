@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>用户注册</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/backend-plugin.min.css">
+    <link rel="stylesheet" href="/static/css/backend.css">
+</head>
+<body class=" ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+
+<div class="wrapper">
+    <section class="login-content">
+        <div class="container h-100">
+            <div class="row align-items-center justify-content-center h-100">
+                <div class="col-md-5">
+                    <div class="card p-3">
+                        <div class="card-body">
+                            <div class="auth-logo">
+                                <img src="/static/picture/logo.png" class="img-fluid  rounded-normal  darkmode-logo"
+                                     alt="logo">
+                                <img src="/static/picture/logo-dark.png" class="img-fluid rounded-normal light-logo"
+                                     alt="logo">
+                            </div>
+                            <h3 class="mb-3 font-weight-bold text-center">用户注册</h3>
+
+
+                            <div class="mb-5">
+                                <p class="line-around text-secondary mb-0"><span
+                                        class="line-around-1">微博舆情分析管理系统</span>
+                                </p>
+                            </div>
+                            <form>
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <div class="form-group">
+                                            <label class="text-secondary">用户名：</label>
+                                            <input class="form-control" id="username" name="username" type="text"
+                                                   placeholder="请输入用户名...">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <div class="form-group">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="text-secondary">密码：</label>
+                                            </div>
+                                            <input class="form-control" id="password" name="password" type="password"
+                                                   placeholder="请输入密码...">
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-12 mt-2">
+                                        <div class="form-group">
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <label class="text-secondary">确认密码：</label>
+                                            </div>
+                                            <input class="form-control" id="password2" name="password2" type="password"
+                                                   placeholder="请输入确认密码...">
+                                        </div>
+                                    </div>
+                                </div>
+                                <button type="button" onclick="submitForm()" class="btn btn-primary btn-block mt-2">登录
+                                </button>
+                                <div class="col-lg-12 mt-3">
+                                    <p class="mb-0 text-center"><font id="info" color="red"></font>&nbsp;&nbsp;已有账号?
+                                        <a
+                                                href="/user/login">用户登录</a></p>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+<script>
+    function submitForm() {
+        let username = $("#username").val()
+        let password = $("#password").val()
+        let password2 = $("#password2").val()
+        if (username == "") {
+            $("#info").text("用户名不能为空!")
+            return false;
+        }
+        if (password == "") {
+            $("#info").text("密码不能为空!")
+            return false;
+        }
+        if (password2 == "") {
+            $("#info").text("确认密码不能为空!")
+            return false;
+        }
+        if (password != password2) {
+            $("#info").text("确认密码不正确!")
+            return false;
+        }
+        $.post('/user/register', {
+            'username': username,
+            'password': password,
+            'password2': password2
+        }, function (result) {
+            if (result.error) {
+                $("#info").text(result.info)
+            } else {
+                $("#info").text("注册成功!")
+            }
+        })
+    }
+</script>
+<!-- Backend Bundle JavaScript -->
+<script src="/static/js/backend-bundle.min.js"></script>
+<!-- Chart Custom JavaScript -->
+<script src="/static/js/customizer.js"></script>
+
+<script src="/static/js/sidebar.js"></script>
+
+<!-- Flextree Javascript-->
+<script src="/static/js/flex-tree.min.js"></script>
+<script src="/static/js/tree.js"></script>
+
+<!-- Table Treeview JavaScript -->
+<script src="/static/js/table-treeview.js"></script>
+
+<!-- SweetAlert JavaScript -->
+<script src="/static/js/sweetalert.js"></script>
+
+<!-- Vectoe Map JavaScript -->
+<script src="/static/js/vector-map-custom.js"></script>
+
+<!-- Chart Custom JavaScript -->
+<script src="/static/js/chart-custom.js"></script>
+<script src="/static/js/01.js"></script>
+<script src="/static/js/02.js"></script>
+
+<!-- slider JavaScript -->
+<script src="/static/js/slider.js"></script>
+
+<!-- Emoji picker -->
+<script src="/static/js/index.js" type="module"></script>
+
+
+<!-- app JavaScript -->
+<script src="/static/js/app.js"></script>
+</body>
+</html>

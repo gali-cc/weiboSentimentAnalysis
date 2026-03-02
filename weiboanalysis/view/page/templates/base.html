@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>{% block title %}首页{% endblock %}</title>
+    <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}" type="image/x-icon">
+    <link rel="stylesheet" href="/static/css/backend-plugin.min.css">
+    <link rel="stylesheet" href="/static/css/backend.css">
+</head>
+<body class="  ">
+<!-- loader Start -->
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+<!-- Wrapper Start -->
+<div class="wrapper">
+    <div class="iq-sidebar  sidebar-default  ">
+        <div class="iq-sidebar-logo d-flex align-items-end justify-content-between">
+            <a href="" class="header-logo">
+                <img src="/static/picture/logo.png" class="img-fluid rounded-normal light-logo" alt="logo">
+                <img src="/static/picture/logo-dark.png" class="img-fluid rounded-normal d-none sidebar-light-img"
+                     alt="logo">
+                <span>微博舆情数据分析</span>
+            </a>
+            <div class="side-menu-bt-sidebar-1">
+                <svg xmlns="http://www.w3.org/2000/svg" class="text-light wrapper-menu" width="30" fill="none"
+                     viewbox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </div>
+        </div>
+        <div class="data-scrollbar" data-scroll="1">
+            <nav class="iq-sidebar-menu">
+                <ul id="iq-sidebar-toggle" class="side-menu">
+                    <li class="active sidebar-layout">
+                        <a href="/page/home" class="svg-icon">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">首页</span>
+                        </a>
+                    </li>
+                    <li class="px-3 pt-3 pb-2 ">
+                        <span class="text-uppercase small font-weight-bold">舆情分析</span>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/hotWord" class="svg-icon ">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">微博热词统计</span>
+                        </a>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/articleData" class="svg-icon">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">微博舆情分析</span>
+                        </a>
+                    </li>
+
+                    <li class="px-3 pt-3 pb-2">
+                        <span class="text-uppercase small font-weight-bold">数据可视化</span>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/articleDataAnalysis" class="svg-icon">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+                                </svg>
+                            </i><span class="ml-2">微博文章分析</span>
+                        </a>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/ipDataAnalysis" class="svg-icon">
+                            <i class="">
+                                <svg class="svg-icon" id="iq-user-1-1" xmlns="http://www.w3.org/2000/svg" fill="none"
+                                     viewbox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M5.121 17.804A13.937 13.937 0 0112 16c2.5 0 4.847.655 6.879 1.804M15 10a3 3 0 11-6 0 3 3 0 016 0zm6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </i><span class="ml-2">微博IP分析</span>
+                        </a>
+                    </li>
+
+
+                    <li class=" sidebar-layout">
+                        <a href="/page/commentDataAnalysis" class="svg-icon">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"></path>
+                                </svg>
+                            </i><span class="ml-2">微博评论分析</span>
+                        </a>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/sentimentAnalysis" class="svg-icon">
+                            <i class="">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" fill="none" viewbox="0 0 24 24"
+                                     stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path>
+                                </svg>
+                            </i><span class="ml-2">微博舆情分析</span>
+                        </a>
+                    </li>
+
+                    <li class="px-3 pt-3 pb-2">
+                        <span class="text-uppercase small font-weight-bold">词云图</span>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/articleCloud" class="svg-icon">
+                            <i class="">
+                                <svg class="svg-icon" id="iq-chart-1" width="18" xmlns="http://www.w3.org/2000/svg"
+                                     fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                                          style="stroke-dasharray: 96, 116; stroke-dashoffset: 0;"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">微博内容词云图</span>
+                        </a>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/commentCloud" class="svg-icon">
+                            <i class="">
+                                <svg class="svg-icon" id="iq-chart-1" width="18" xmlns="http://www.w3.org/2000/svg"
+                                     fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                                          style="stroke-dasharray: 96, 116; stroke-dashoffset: 0;"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">微博评论词云图</span>
+                        </a>
+                    </li>
+                    <li class=" sidebar-layout">
+                        <a href="/page/commentUserCloud" class="svg-icon">
+                            <i class="">
+                                <svg class="svg-icon" id="iq-chart-1" width="18" xmlns="http://www.w3.org/2000/svg"
+                                     fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                          d="M8 13v-1m4 1v-3m4 3V8M8 21l4-4 4 4M3 4h18M4 4h16v12a1 1 0 01-1 1H5a1 1 0 01-1-1V4z"
+                                          style="stroke-dasharray: 96, 116; stroke-dashoffset: 0;"></path>
+                                </svg>
+                            </i>
+                            <span class="ml-2">微博评论用户词云图</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="pt-5 pb-5"></div>
+        </div>
+    </div>
+    <div class="iq-top-navbar">
+        <div class="iq-navbar-custom">
+            <nav class="navbar navbar-expand-lg navbar-light p-0">
+                <div class="side-menu-bt-sidebar">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="text-secondary wrapper-menu" width="30" fill="none"
+                         viewbox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                </div>
+                <div class="d-flex align-items-center">
+
+                    <button class="navbar-toggler" type="button" data-toggle="collapse"
+                            data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                            aria-label="Toggle navigation">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="text-secondary" width="30" fill="none"
+                             viewbox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M4 6h16M4 12h16m-7 6h7"></path>
+                        </svg>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto navbar-list align-items-center">
+
+                            <li class="nav-item nav-icon dropdown">
+                                <a href="#" class="nav-item nav-icon dropdown-toggle pr-0 search-toggle"
+                                   id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+                                   aria-expanded="false">
+
+                                    <span class="mb-0 ml-2 user-name">当前用户：{{ session['username'] }}&nbsp;&nbsp;&nbsp;</span>
+                                </a>
+                                <ul class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                                    <li class="dropdown-item  d-flex svg-icon border-top">
+                                        <svg class="svg-icon mr-0 text-secondary" id="h-05-p" width="20"
+                                             xmlns="http://www.w3.org/2000/svg" fill="none" viewbox="0 0 24 24"
+                                             stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                  d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+                                        </svg>
+                                        <a href="/user/logout">安全退出</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="change-mode">
+                        <div class="custom-control custom-switch custom-switch-icon custom-control-inline">
+                            <div class="custom-switch-inner">
+                                <p class="mb-0"></p>
+                                <input type="checkbox" class="custom-control-input" id="dark-mode" data-active="true">
+                                <label class="custom-control-label" for="dark-mode" data-mode="toggle">
+                                      <span class="switch-icon-right">
+                                          <svg xmlns="http://www.w3.org/2000/svg" id="h-moon" height="20" width="20"
+                                               class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+                                          </svg>
+                                      </span>
+                                    <span class="switch-icon-left">
+                                          <svg xmlns="http://www.w3.org/2000/svg" id="h-sun" height="20" width="20"
+                                               class="h-6 w-6" fill="none" viewbox="0 0 24 24" stroke="currentColor">
+                                              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+                                          </svg>
+                                      </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+    <div class="content-page">
+        {% block content %}
+        {% endblock %}
+    </div>
+</div>
+<!-- Wrapper End-->
+<footer class="iq-footer">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+
+            </div>
+            <div class="col-lg-6 text-right">
+                <span class="mr-1">Copyright &copy; 2026 gali-cc All rights reserved.<a target="_blank"
+                                                                                          href="https://github.com/gali-cc">@gali-cc</a></span>
+            </div>
+        </div>
+    </div>
+</footer>
+<script src="/static/js/backend-bundle.min.js"></script>
+<script src="/static/js/customizer.js"></script>
+<script src="/static/js/sidebar.js"></script>
+<script src="/static/js/flex-tree.min.js"></script>
+<script src="/static/js/tree.js"></script>
+<script src="/static/js/table-treeview.js"></script>
+<script src="/static/js/sweetalert.js"></script>
+<script src="/static/js/vector-map-custom.js"></script>
+<script src="/static/js/chart-custom.js"></script>
+<script src="/static/js/01.js"></script>
+<script src="/static/js/02.js"></script>
+<script src="/static/js/slider.js"></script>
+<script src="/static/js/index.js" type="module"></script>
+<script src="/static/js/app.js"></script>
+<script src="/static/js/echarts.min.js"></script>
+<script src="/static/js/china.js"></script>
+
+{% block echarts %}
+{% endblock %}
+</body>
+</html>
