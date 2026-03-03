@@ -26,7 +26,7 @@
 
 - 数据库：
   - 首次运行项目时，需要先创建数据库。。
-  - 数据库连接文件为：weiboanalysis.db
+  - 数据库连接文件为：weiboanalysis.extensions
   - 数据库sql文件: db_weibo.sql
 - 爬虫：
   - 首次运行项目时，需要先运行爬虫，将数据爬取到数据库中。
